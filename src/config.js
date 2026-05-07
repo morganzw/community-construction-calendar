@@ -19,7 +19,7 @@ export const config = {
   googleApiKey: 'AIzaSyCKCx14hEzI9X_8IdNluxZAhkTOfIOEU24',
 
   // Your community's display info
-  streetName: 'Midwick Drive',
+  streetName: 'Alpine Villa',
   neighborhood: 'Altadena',
   city: 'Altadena, CA',
 
