@@ -8,15 +8,15 @@
 export const config = {
   // The ID of your shared Google Calendar.
   // Find it in Google Calendar → Settings → your calendar → "Calendar ID"
-  calendarId: 'YOUR_CALENDAR_ID@group.calendar.google.com',
+  calendarId: 'fc4bcefff50be534acb408219894c73b81a6bb4a98a87ba84e20f59dae0e875c@group.calendar.google.com',
 
   // Google OAuth 2.0 client ID for the standalone web app (sign-in + submit).
   // Create one at console.cloud.google.com → APIs & Services → Credentials
-  googleClientId: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+  googleClientId: '512896218687-vvambvg466gtd996m7fe9tb09jqkcnqq.apps.googleusercontent.com',
 
   // Google API key for read-only access (used in embedded/iframe mode — no login needed).
   // Same Google Cloud project → Credentials → API key (restrict to Calendar API)
-  googleApiKey: 'YOUR_GOOGLE_API_KEY',
+  googleApiKey: 'AIzaSyCKCx14hEzI9X_8IdNluxZAhkTOfIOEU24',
 
   // Your community's display info
   streetName: 'Midwick Drive',
