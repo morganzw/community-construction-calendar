@@ -5,9 +5,14 @@ export function parseGCalEvent(gcalEvent) {
   const start = gcalEvent.start?.dateTime ?? gcalEvent.start?.date
   const end = gcalEvent.end?.dateTime ?? gcalEvent.end?.date
 
-  // Event type is stored as the first word of the description or via extendedProperties
+  // Event type: prefer extendedProperties, fall back to parsing "Work type: X" from description
+  const desc = gcalEvent.description ?? ''
+  const typeFromDesc = config.eventTypes.find(t =>
+    desc.toLowerCase().includes(`work type: ${t.label.toLowerCase()}`)
+  )
   const typeId = gcalEvent.extendedProperties?.private?.eventType
     ?? gcalEvent.extendedProperties?.shared?.eventType
+    ?? typeFromDesc?.id
     ?? 'other'
 
   const eventType = config.eventTypes.find(t => t.id === typeId) ?? config.eventTypes.at(-1)
