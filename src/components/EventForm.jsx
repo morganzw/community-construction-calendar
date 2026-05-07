@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { config } from '../config.js'
-import { buildGCalEvent } from '../utils/calendarHelpers.js'
+import { getEventType } from '../utils/calendarHelpers.js'
 
 const defaultForm = () => {
   const tomorrow = new Date()
@@ -19,30 +19,55 @@ const defaultForm = () => {
   }
 }
 
-export default function EventForm({ onSubmit, onClose, submitting }) {
+// Opens a pre-filled Google Calendar event in a new tab — no OAuth needed.
+// The user saves it themselves to the shared calendar.
+function buildGCalUrl(form) {
+  const type = getEventType(form.typeId)
+  const title = form.title || `${type.label}${form.address ? ` — ${form.address}` : ''}`
+  const details = [
+    `Work type: ${type.label}`,
+    form.contact ? `Contact: ${form.contact}` : '',
+    form.description,
+  ].filter(Boolean).join('\n')
+
+  const fmt = (iso) => iso.replace(/[-:]/g, '').replace('T', 'T').slice(0, 15)
+  const dates = `${fmt(form.start)}/${fmt(form.end)}`
+
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: title,
+    dates,
+    details,
+    location: form.address,
+    add: config.calendarId,
+  })
+  return `https://calendar.google.com/calendar/render?${params}`
+}
+
+export default function EventForm({ onClose }) {
   const [form, setForm] = useState(defaultForm())
   const [error, setError] = useState(null)
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     setError(null)
     if (!form.title.trim()) { setError('Please enter a title.'); return }
     if (new Date(form.start) >= new Date(form.end)) { setError('End must be after start.'); return }
-    try {
-      await onSubmit(buildGCalEvent(form))
-    } catch (err) {
-      setError(err.message ?? 'Failed to create event.')
-    }
+    window.open(buildGCalUrl(form), '_blank', 'noopener')
+    onClose()
   }
 
   return (
     <form onSubmit={handleSubmit}>
+      <p style={{ fontSize: '0.82rem', color: '#6b7280', marginBottom: '1rem', lineHeight: 1.5 }}>
+        Fill in your event details and click <strong>Open in Google Calendar</strong>. A pre-filled event will open in a new tab — just save it to the shared <em>{config.streetName}</em> calendar.
+      </p>
       <div className="form-group">
         <label>Event Title *</label>
         <input value={form.title} onChange={e => set('title', e.target.value)}
-          placeholder="e.g. Foundation pour at 123 Oak St" required />
+          placeholder={`e.g. Foundation pour at 123 ${config.streetName}`} required />
       </div>
       <div className="form-group">
         <label>Address / Property</label>
@@ -81,10 +106,8 @@ export default function EventForm({ onSubmit, onClose, submitting }) {
         <div style={{ color: '#ef4444', fontSize: '0.85rem', marginBottom: '1rem' }}>⚠ {error}</div>
       )}
       <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-        <button type="button" className="btn btn-outline" onClick={onClose} disabled={submitting}>Cancel</button>
-        <button type="submit" className="btn btn-primary" disabled={submitting}>
-          {submitting ? <><span className="spinner" /> Saving…</> : 'Add to Calendar'}
-        </button>
+        <button type="button" className="btn btn-outline" onClick={onClose}>Cancel</button>
+        <button type="submit" className="btn btn-primary">Open in Google Calendar →</button>
       </div>
     </form>
   )

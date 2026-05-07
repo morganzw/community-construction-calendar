@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Header from './components/Header.jsx'
 import GanttView from './components/GanttView.jsx'
 import EventList from './components/EventList.jsx'
@@ -16,34 +16,15 @@ const isEmbedded = (() => {
 export default function App() {
   const [tab, setTab] = useState('gantt')
   const [showForm, setShowForm] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
 
-  const { gapiReady, isSignedIn, userProfile, events, loading, error,
-          signIn, signOut, createEvent } = useGoogleCalendar({ isEmbedded })
+  const { events, loading, error } = useGoogleCalendar({ isEmbedded })
 
   const isDemo = error === 'demo' || config.calendarId.includes('YOUR_')
   const displayEvents = isDemo ? DEMO_EVENTS : events
 
-  const handleAddEvent = async (eventBody) => {
-    setSubmitting(true)
-    try {
-      await createEvent(eventBody)
-      setShowForm(false)
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
   return (
     <div className={`app${isEmbedded ? ' embedded' : ''}`}>
-      <Header
-        isEmbedded={isEmbedded}
-        isSignedIn={isSignedIn}
-        userProfile={userProfile}
-        onSignIn={signIn}
-        onSignOut={signOut}
-        onAddEvent={() => setShowForm(true)}
-      />
+      <Header isEmbedded={isEmbedded} onAddEvent={() => setShowForm(true)} />
 
       <main className="main-content">
         {isDemo && (
@@ -87,18 +68,8 @@ export default function App() {
             {tab === 'submit' && isEmbedded && <EmbeddedFormPanel />}
           </>
         )}
-
-        {/* Standalone add-event button for signed-in users on mobile / list view */}
-        {!isEmbedded && !isSignedIn && tab === 'list' && (
-          <div style={{ marginTop: '1.25rem', textAlign: 'center' }}>
-            <button className="btn btn-primary" onClick={signIn}>
-              Sign in with Google to add an event
-            </button>
-          </div>
-        )}
       </main>
 
-      {/* Add event modal — standalone mode only */}
       {showForm && (
         <div className="modal-backdrop" onClick={e => e.target === e.currentTarget && setShowForm(false)}>
           <div className="modal">
@@ -106,11 +77,7 @@ export default function App() {
               <h2>Add Construction Event</h2>
               <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
             </div>
-            <EventForm
-              onSubmit={handleAddEvent}
-              onClose={() => setShowForm(false)}
-              submitting={submitting}
-            />
+            <EventForm onClose={() => setShowForm(false)} />
           </div>
         </div>
       )}
