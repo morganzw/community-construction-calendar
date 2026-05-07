@@ -23,24 +23,36 @@ const defaultForm = () => {
 // The user saves it themselves to the shared calendar.
 function buildGCalUrl(form) {
   const type = getEventType(form.typeId)
-  const title = form.title || `${type.label}${form.address ? ` — ${form.address}` : ''}`
+  const title = form.title.trim() || `${type.label}${form.address ? ` — ${form.address}` : ''}`
   const details = [
     `Work type: ${type.label}`,
     form.contact ? `Contact: ${form.contact}` : '',
     form.description,
   ].filter(Boolean).join('\n')
 
-  const fmt = (iso) => iso.replace(/[-:]/g, '').replace('T', 'T').slice(0, 15)
-  const dates = `${fmt(form.start)}/${fmt(form.end)}`
+  // Google Calendar requires YYYYMMDDTHHMMSS — datetime-local omits seconds
+  const fmt = (iso) => {
+    const d = new Date(iso)
+    return [
+      d.getFullYear(),
+      String(d.getMonth() + 1).padStart(2, '0'),
+      String(d.getDate()).padStart(2, '0'),
+      'T',
+      String(d.getHours()).padStart(2, '0'),
+      String(d.getMinutes()).padStart(2, '0'),
+      '00',
+    ].join('')
+  }
 
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: title,
-    dates,
-    details,
-    location: form.address,
-    add: config.calendarId,
-  })
+  const params = [
+    'action=TEMPLATE',
+    `text=${encodeURIComponent(title)}`,
+    `dates=${encodeURIComponent(`${fmt(form.start)}/${fmt(form.end)}`)}`,
+    `details=${encodeURIComponent(details)}`,
+    `location=${encodeURIComponent(form.address)}`,
+    `add=${encodeURIComponent(config.calendarId)}`,
+  ].join('&')
+
   return `https://calendar.google.com/calendar/render?${params}`
 }
 
