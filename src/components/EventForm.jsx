@@ -44,14 +44,13 @@ function buildGCalUrl(form) {
     ].join('')
   }
 
-  const params = [
-    'action=TEMPLATE',
-    `text=${encodeURIComponent(title)}`,
-    `dates=${encodeURIComponent(`${fmt(form.start)}/${fmt(form.end)}`)}`,
-    `details=${encodeURIComponent(details)}`,
-    `location=${encodeURIComponent(form.address)}`,
-    `add=${encodeURIComponent(config.calendarId)}`,
-  ].join('&')
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: title,
+    dates: `${fmt(form.start)}/${fmt(form.end)}`,
+    details,
+    location: form.address,
+  })
 
   return `https://calendar.google.com/calendar/render?${params}`
 }
@@ -74,7 +73,8 @@ export default function EventForm({ onClose }) {
   return (
     <form onSubmit={handleSubmit}>
       <p style={{ fontSize: '0.82rem', color: '#6b7280', marginBottom: '1rem', lineHeight: 1.5 }}>
-        Fill in your event details and click <strong>Open in Google Calendar</strong>. A pre-filled event will open in a new tab — just save it to the shared <em>{config.streetName}</em> calendar.
+        Fill in your details and click <strong>Open in Google Calendar →</strong>. A pre-filled event opens in a new tab.
+        Before saving, change the <strong>calendar dropdown</strong> to <em>{config.streetName} Construction</em> so it shows up here for everyone.
       </p>
       <div className="form-group">
         <label>Event Title *</label>
