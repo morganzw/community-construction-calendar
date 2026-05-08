@@ -23,8 +23,8 @@ export const config = {
   neighborhood: 'Altadena',
   city: 'Altadena, CA',
 
-  // Optional: URL of the Google Form for the embedded-mode submission
-  googleFormUrl: 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true',
+  // Google Form for submitting construction events (used in both standalone and embedded modes)
+  googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd98knPlfNSLRmIDFGGMwTszCFQRqnOfaQzKrmumzUmBFYA6g/viewform?embedded=true',
 
   // How many months ahead to show on the calendar
   lookAheadMonths: 6,
