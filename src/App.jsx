@@ -16,6 +16,7 @@ const isEmbedded = (() => {
 export default function App() {
   const [tab, setTab] = useState('gantt')
   const [showForm, setShowForm] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   const { events, loading, error } = useGoogleCalendar({ isEmbedded })
 
@@ -34,6 +35,20 @@ export default function App() {
           }}>
             <strong>Demo mode</strong> — update <code>calendarId</code> and <code>googleApiKey</code> in{' '}
             <code>src/config.js</code> to connect your real calendar.
+          </div>
+        )}
+
+        {submitted && (
+          <div style={{
+            background: '#f0fdf4', border: '1px solid #86efac', borderRadius: '8px',
+            padding: '0.65rem 1rem', marginBottom: '1rem', fontSize: '0.85rem', color: '#166534',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem'
+          }}>
+            <span>✓ <strong>Event submitted!</strong> It may take 1–2 minutes to appear while the calendar syncs.</span>
+            <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
+              <button className="btn btn-sm btn-outline" onClick={() => window.location.reload()}>Refresh now</button>
+              <button className="btn btn-sm btn-outline" onClick={() => setSubmitted(false)} style={{ padding: '0.3rem 0.5rem' }}>×</button>
+            </div>
           </div>
         )}
 
@@ -77,7 +92,7 @@ export default function App() {
               <h2>Add Construction Event</h2>
               <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
             </div>
-            <FormModal onClose={() => setShowForm(false)} />
+            <FormModal onClose={() => setShowForm(false)} onSubmitted={() => setSubmitted(true)} />
           </div>
         </div>
       )}
