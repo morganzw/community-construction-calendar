@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Header from './components/Header.jsx'
 import GanttView from './components/GanttView.jsx'
 import EventList from './components/EventList.jsx'
-import EventForm from './components/EventForm.jsx'
+import FormModal from './components/FormModal.jsx'
 import EmbeddedFormPanel from './components/EmbeddedFormPanel.jsx'
 import { useGoogleCalendar } from './hooks/useGoogleCalendar.js'
 import { DEMO_EVENTS } from './demoData.js'
@@ -77,7 +77,7 @@ export default function App() {
               <h2>Add Construction Event</h2>
               <button className="modal-close" onClick={() => setShowForm(false)}>×</button>
             </div>
-            <EventForm onClose={() => setShowForm(false)} />
+            <FormModal onClose={() => setShowForm(false)} />
           </div>
         </div>
       )}
