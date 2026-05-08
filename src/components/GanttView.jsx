@@ -78,6 +78,16 @@ export default function GanttView({ events }) {
       <style>{`
         .gantt .bar { rx: 4; ry: 4; }
         .conflict-bar .bar { stroke: #ef4444 !important; stroke-width: 2px !important; }
+        .gantt-container .popup-wrapper {
+          background: #ffffff !important;
+          border: 1px solid #e5e7eb !important;
+          border-radius: 8px !important;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+          padding: 0 !important;
+        }
+        .gantt-container .popup-wrapper .pointer {
+          display: none !important;
+        }
       `}</style>
     </div>
   )
