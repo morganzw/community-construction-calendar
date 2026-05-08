@@ -76,14 +76,14 @@ export default function App() {
 
         <div className="tabs">
           <button className={`tab-btn${tab === 'gantt' ? ' active' : ''}`} onClick={() => setTab('gantt')}>
-            📊 Gantt Chart
+            Gantt Chart
           </button>
           <button className={`tab-btn${tab === 'list' ? ' active' : ''}`} onClick={() => setTab('list')}>
-            📋 Event List
+            Event List
           </button>
           {isEmbedded && (
             <button className={`tab-btn${tab === 'submit' ? ' active' : ''}`} onClick={() => setTab('submit')}>
-              ➕ Submit Event
+              Submit Event
             </button>
           )}
         </div>

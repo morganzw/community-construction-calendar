@@ -22,6 +22,7 @@ export const config = {
   streetName: 'Alpine Villa',
   neighborhood: 'Altadena',
   city: 'Altadena, CA',
+  calendarTitle: 'Alpine Villa Neighborhood Construction Calendar',
 
   // Google Form for submitting construction events (used in both standalone and embedded modes)
   googleFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSd98knPlfNSLRmIDFGGMwTszCFQRqnOfaQzKrmumzUmBFYA6g/viewform?embedded=true',
