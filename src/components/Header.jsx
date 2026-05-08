@@ -16,13 +16,12 @@ export default function Header({ isEmbedded, onAddEvent }) {
         </div>
       </div>
       <div className="header-body">
-        <p>
-          A shared calendar for Alpine Villa neighbors coordinating construction and rebuild work in Altadena.
-          Helping everyone plan around heavy equipment, deliveries, and street access.
-        </p>
-        <p>
-          Click any bar on the chart to see event details. To add your own construction dates, click <strong>+ Add Event</strong> above — your neighbors will thank you.
-        </p>
+        <p>A shared calendar for Alpine Villa — Helping everyone plan around heavy equipment, deliveries, and street access.</p>
+        <p style={{ marginTop: '0.75rem', fontWeight: 600 }}>Instructions:</p>
+        <ul style={{ marginTop: '0.3rem', paddingLeft: '1.25rem', lineHeight: 1.8 }}>
+          <li>Click any bar on the chart below to see event details, and conflicts.</li>
+          <li>To add your own construction dates, click <strong>+ Add Event</strong> (upper right).</li>
+        </ul>
       </div>
     </header>
   )
